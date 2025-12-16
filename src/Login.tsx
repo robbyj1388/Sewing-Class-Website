@@ -1,23 +1,32 @@
 import React from "react";
-import { redirect } from "react-router";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 function Login() {
   const {
-      register,
-      handleSubmit,
-      formState: { errors },
-  } = useForm();
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<{ email: string; password: string }>();
 
   // Use to navigate user to new page
   const navigate = useNavigate();
 
+  const database = {
+    email: "robbyj@gmail.com",
+    password: "pass",
+  }
+
   // Check login data (to do)
-  const onSubmit = (data) => {
-    const userData = data.email;
-    navigate("./Registration");
+  const onSubmit = (data: { email: string; password: string; }) => {
+    // Check if data is eqaul to database
+    if (data.email === database.email && data.password === database.password){
+      alert("Login Successful");
+      navigate("./Registration");
+    }else{
+      alert("Login Failed");
+    }
   };
 
   return (
@@ -39,7 +48,8 @@ function Login() {
         />
         {errors.password && <span style={{ color: "red" }}>*Password* is mandatory</span>}
         <br></br>
-        <input type="submit"/>
+        <input type="submit"/> 
+        <button type="button" onClick={() => navigate("./registration")}>Register</button>
       </form>
     </>
   );
